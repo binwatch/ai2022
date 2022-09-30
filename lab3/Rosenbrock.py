@@ -84,7 +84,7 @@ class GeneticAlgorithm(object):
         self.__max_y_array=[]
         self.__max_z_array=[]
 
-        self.__eps = 1e-6
+        self.__eps = 1e-3
         self.__converged = False
         self.__generation = 0
 
@@ -118,7 +118,10 @@ class GeneticAlgorithm(object):
         # kill individuals
         self.__population = self.__population[0 : self.__population_size - kill_number]
         self.__population_size -= kill_number
-    
+
+        if abs(self.__population[0].get_phenotype() - self.__population[self.__population_size-1].get_phenotype()) < self.__eps:
+            self.__converged = True
+ 
     def crossover(self, add_number):
         # choose parents from origin population
         current_pNumber = self.__population_size
@@ -140,17 +143,19 @@ class GeneticAlgorithm(object):
             current_individual.set_genetic(genetic_x, genetic_y)
             current_individual.mutation()
             self.__population.append(current_individual)
-        
-    def evolution(self, times) -> None:
+ 
+        self.__population_size += add_number
+ 
+    def evolution(self) -> None:
 
-        # while not self.converged:
-        for i in range(times):
+        while not self.__converged:
+        #for i in range(times):
             num = (int)(self.__population_size * random.uniform(0.2, 0.5))
             self.selection(num)
             self.crossover(num)
             self.update_fitness()
             self.__generation += 1
-    
+ 
     def get_max(self) -> float:
         self.__population = sorted(self.__population, key= lambda individual:individual.get_fitness(), reverse=True)
         return self.__population[0].get_phenotype()
@@ -188,7 +193,7 @@ class GeneticAlgorithm(object):
 
 def main() -> None:
     solver = GeneticAlgorithm(50)
-    solver.evolution(100)
+    solver.evolution()
     solver.draw()
 
 if __name__ == '__main__':
