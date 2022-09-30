@@ -1,3 +1,6 @@
+# Find maximum of Rosenbrock funtion
+#   using genetic algorithm
+#   with x, y in range [-2.048, 2.048]
 import random
 import matplotlib.pyplot as plt
 import numpy as np
