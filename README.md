@@ -33,3 +33,11 @@ results:
 </table>
 
 ## Lab5 KNN algorithm
+
+## Lab6 handwriting using kNN
+
+## Lab7 Naive Bayes algorithm
+
+## Lab8 Convolutional Neural Network
+
+## Lab9 MNIST 'Hello World' using TensorFlow
