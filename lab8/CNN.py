@@ -1,5 +1,5 @@
 import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
 import numpy
 from keras.datasets import mnist
@@ -18,17 +18,21 @@ seed = 7
 numpy.random.seed(seed)
 
 (X_train, y_train), (X_test, y_test) = mnist.load_data()
-X_train = X_train.reshape(X_train.shape[0], 28, 28, 1).astype('float32')
-X_test = X_test.reshape(X_test.shape[0], 28, 28, 1).astype('float32')
+
+X_train = X_train.reshape(X_train.shape[0],28, 28,1).astype('float32')
+X_test = X_test.reshape(X_test.shape[0], 28, 28,1).astype('float32')
+
 X_train = X_train / 255
 X_test = X_test / 255
+
 y_train = np_utils.to_categorical(y_train)
 y_test = np_utils.to_categorical(y_test)
 num_classes = y_test.shape[1]
 
-def large_cnn():
+def larger_model():
+    # create model
     model = Sequential()
-    model.add(Conv2D(30, (5, 5), input_shape=(28, 28, 1), activation='relu', padding='valid'))
+    model.add(Conv2D(30, (5, 5), input_shape=(28, 28,1), activation='relu',padding='valid'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Dropout(0.4))
     model.add(Conv2D(15, (3, 3), activation='relu'))
@@ -39,11 +43,13 @@ def large_cnn():
     model.add(Dropout(0.4))
     model.add(Dense(50, activation='relu'))
     model.add(Dropout(0.4))
-    model.add(Dense(num_classes, activaton='softmax'))
+    model.add(Dense(num_classes, activation='softmax'))
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     return model
 
-model = large_cnn()
+model = larger_model()
+# Fit the model
 model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=69, batch_size=200, verbose=2)
+# Final evaluation of the model
 scores = model.evaluate(X_test, y_test, verbose=0)
 print("Large CNN Error: %.2f%%" % (100-scores[1]*100))

@@ -93,7 +93,7 @@ def input_validation(origin, target):
 if __name__ == "__main__":
     origin = input()
     target = input()
-    if input_validation() == False:
+    if input_validation(origin, target) == False:
         error_msg = '''Sorry, you need to enter 2 state in 2 lines
         \tand you can only use the characters in 012345678
         \tand each char must be used only once in each state string'''
